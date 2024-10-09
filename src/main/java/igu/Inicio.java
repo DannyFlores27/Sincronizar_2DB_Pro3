@@ -3,6 +3,7 @@ package igu;
 
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;
 import java.awt.Color;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import logica.Control;
@@ -13,6 +14,7 @@ public class Inicio extends javax.swing.JFrame {
     private Control control;
     private String mySql="mySql", postgre="postgre";
     private Persona persona;
+    private boolean esEdicion = false;
     
     public Inicio() {
         this.control = new Control ();
@@ -21,6 +23,8 @@ public class Inicio extends javax.swing.JFrame {
         
         initComponents();
         initStyles();
+        
+        //btnPostgreDB.setEnabled(false);
                 
     }
 
@@ -92,6 +96,11 @@ public class Inicio extends javax.swing.JFrame {
         btnPostgreDB.setBorderPainted(false);
         btnPostgreDB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPostgreDB.setPreferredSize(new java.awt.Dimension(110, 35));
+        btnPostgreDB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPostgreDBActionPerformed(evt);
+            }
+        });
 
         btnMySqlDB.setText("MySQL DB");
         btnMySqlDB.setBorder(null);
@@ -127,6 +136,11 @@ public class Inicio extends javax.swing.JFrame {
         btnCrear.setBorderPainted(false);
         btnCrear.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCrear.setPreferredSize(new java.awt.Dimension(110, 35));
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearActionPerformed(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
         btnGuardar.setBorder(null);
@@ -236,24 +250,78 @@ public class Inicio extends javax.swing.JFrame {
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         
-        
+        // Obtener la fila seleccionada en la tabla
+        int selectedRow = tblDatos.getSelectedRow();
+
+        // Verificar si hay una fila seleccionada
+        if (selectedRow != -1) {
+            // Permitir la edición de la fila seleccionada
+            habilitarEdicionFila(selectedRow);
+        } else {
+            // No hay fila seleccionada, mostrar mensaje
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para actualizar.", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        //persona.setDpi(txtDpi.getText());
-        String tipoDB = lblDbOn.getText();
-        
-        if(persona.getDpi().isEmpty() || persona.getNombre1().isEmpty()){
-            javax.swing.JOptionPane.showMessageDialog(this, "Debe llenar todos los campor \n", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            //nameTxt.requestFocus();
+        // Obtener la fila seleccionada en la tabla
+    int selectedRow = tblDatos.getSelectedRow();
+
+    if (selectedRow != -1) {
+        // Crear una instancia de Persona con los datos editados en la fila seleccionada
+        Persona personaEditada = obtenerDatosFila(selectedRow);
+
+        // Verificar si los campos obligatorios están llenos (DPI y Nombre1)
+        if (personaEditada.getDpi().isEmpty() || personaEditada.getNombre1().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe llenar todos los campos obligatorios (DPI, Nombre1).", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
-        
-        control.actualizarPersona(persona, tipoDB);
+
+        // Obtener el tipo de base de datos del label
+        String tipoDB = lblDbOn.getText();
+
+        // Llamar a la capa de control para actualizar o crear la persona
+        if (esEdicion) { // Suponiendo que tienes una variable booleana esEdicion para identificar si es actualización
+            control.actualizarPersona(personaEditada, tipoDB);
+            javax.swing.JOptionPane.showMessageDialog(this, "Los cambios han sido guardados exitosamente.");
+        } else {
+            control.crearPersona(personaEditada, tipoDB);
+            javax.swing.JOptionPane.showMessageDialog(this, "La nueva persona ha sido creada exitosamente.");
+        }
+
+        // Deshabilitar la edición
+        deshabilitarEdicion();
+    } else {
+        // No hay fila seleccionada, mostrar mensaje
+        javax.swing.JOptionPane.showMessageDialog(this, "No hay fila seleccionada para guardar.", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnMySqlDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMySqlDBActionPerformed
         cargarTabla(mySql);
+        btnMySqlDB.setEnabled(false);
+        btnPostgreDB.setEnabled(true);
     }//GEN-LAST:event_btnMySqlDBActionPerformed
+
+    private void btnPostgreDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPostgreDBActionPerformed
+        cargarTabla(postgre);
+        btnMySqlDB.setEnabled(true);
+        btnPostgreDB.setEnabled(false);
+    }//GEN-LAST:event_btnPostgreDBActionPerformed
+
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+        this.esEdicion = false; // Establece que estás en modo de creación
+        DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
+    // Agregar una nueva fila vacía al final de la tabla
+    modelo.addRow(new Object[] { "", "", "", "", "", "", "", "", BigDecimal.ZERO, BigDecimal.ZERO });
+    
+    // Seleccionar la última fila (la nueva fila vacía)
+    int newRow = modelo.getRowCount() - 1;
+    tblDatos.setRowSelectionInterval(newRow, newRow);
+
+    // Habilitar la edición solo en la nueva fila
+    habilitarEdicion(newRow);
+    }//GEN-LAST:event_btnCrearActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -264,7 +332,6 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JButton btnMySqlDB;
     private javax.swing.JButton btnPostgreDB;
     private javax.swing.JButton btnSincronizarDB;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblDbOn;
     private javax.swing.JLabel lblTituloApp;
     private javax.swing.JPanel pnlFondo;
@@ -289,6 +356,8 @@ public class Inicio extends javax.swing.JFrame {
     }
     
     private void cargarTabla(String tipoDB){
+        // Limpiar la tabla antes de llenarla
+        limpiarTabla();
         // Obtener la lista de personas desde la capa de lógica de negocio
         List<Persona> personas = control.obtenerPersonas(tipoDB);
         llenarTabla(personas);
@@ -337,6 +406,139 @@ public class Inicio extends javax.swing.JFrame {
         // Crear el modelo de la tabla y establecerlo en la JTable
         DefaultTableModel modeloTabla = new DefaultTableModel(datosPersonas, columnas);
         tblDatos.setModel(modeloTabla);
+    }
+
+    private void limpiarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
+        int rowCount = modelo.getRowCount();
+
+        // Elimina todas las filas del modelo desde la última hasta la primera
+        for (int i = rowCount - 1; i >= 0; i--) {
+            modelo.removeRow(i);
+        }
+    }
+
+    private void habilitarEdicionFila(int fila) {
+        DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
+
+        // Obtener los nombres de las columnas
+        String[] columnas = { "DPI", "Nombre1", "Nombre2", "Apellido1", "Apellido2", "Dirección", "Teléfono Domicilio", "Teléfono Móvil", "Salario Base", "Bonificación" };
+
+        // Convertir el Vector de datos a un arreglo bidimensional de Object
+        int rowCount = modelo.getRowCount();
+        int columnCount = modelo.getColumnCount();
+        Object[][] datos = new Object[rowCount][columnCount];
+
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                datos[i][j] = modelo.getValueAt(i, j);
+            }
+        }
+
+        // Crear un nuevo modelo para permitir la edición en la fila seleccionada
+        tblDatos.setModel(new DefaultTableModel(datos, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Permitir la edición solo en la fila seleccionada
+                return row == fila;
+            }
+        });
+
+        tblDatos.repaint();
+    }
+    
+    private void habilitarEdicion(int fila) {
+        DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
+
+        // Obtener los nombres de las columnas
+        String[] columnas = { "DPI", "Nombre1", "Nombre2", "Apellido1", "Apellido2", "Dirección", 
+                              "Teléfono Domicilio", "Teléfono Móvil", "Salario Base", "Bonificación" };
+
+        // Convertir el Vector de datos a un arreglo bidimensional de Object
+        int rowCount = modelo.getRowCount();
+        int columnCount = modelo.getColumnCount();
+        Object[][] datos = new Object[rowCount][columnCount];
+
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                datos[i][j] = modelo.getValueAt(i, j);
+            }
+        }
+
+        // Crear un nuevo modelo que permita la edición solo en la fila especificada
+        tblDatos.setModel(new DefaultTableModel(datos, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Permitir la edición solo en la fila especificada
+                return row == fila;
+            }
+        });
+
+        tblDatos.repaint();
+    }
+
+
+    private void deshabilitarEdicion() {
+        DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
+
+        // Obtener los nombres de las columnas
+        String[] columnas = { "DPI", "Nombre1", "Nombre2", "Apellido1", "Apellido2", 
+                              "Dirección", "Teléfono Domicilio", "Teléfono Móvil", 
+                              "Salario Base", "Bonificación" };
+
+        // Convertir el Vector de datos a un arreglo bidimensional de Object
+        int rowCount = modelo.getRowCount();
+        int columnCount = modelo.getColumnCount();
+        Object[][] datos = new Object[rowCount][columnCount];
+
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                datos[i][j] = modelo.getValueAt(i, j);
+            }
+        }
+
+        // Crear un nuevo modelo que no permita edición
+        tblDatos.setModel(new DefaultTableModel(datos, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // No permitir edición en ninguna celda
+            }
+        });
+
+        tblDatos.repaint();
+    }
+
+    // Función para obtener los datos de la fila seleccionada y crear una Persona
+    private Persona obtenerDatosFila(int fila) {
+        // Obtener los datos de la tabla
+        String dpi = tblDatos.getValueAt(fila, 0).toString();
+        String nombre1 = tblDatos.getValueAt(fila, 1).toString();
+        String nombre2 = tblDatos.getValueAt(fila, 2).toString();
+        String apellido1 = tblDatos.getValueAt(fila, 3).toString();
+        String apellido2 = tblDatos.getValueAt(fila, 4).toString();
+        String direccion = tblDatos.getValueAt(fila, 5).toString();
+
+        // Conversión de los teléfonos a int
+        int telefonoDomicilio = Integer.parseInt(tblDatos.getValueAt(fila, 6).toString());
+        int telefonoMovil = Integer.parseInt(tblDatos.getValueAt(fila, 7).toString());
+
+        // Conversión de los valores numéricos a BigDecimal
+        BigDecimal salarioBase = new BigDecimal(tblDatos.getValueAt(fila, 8).toString());
+        BigDecimal bonificacion = new BigDecimal(tblDatos.getValueAt(fila, 9).toString());
+
+        // Crear un objeto Persona con los datos de la fila
+        return new Persona(dpi, nombre1, nombre2, apellido1, apellido2, direccion, telefonoDomicilio, telefonoMovil, salarioBase, bonificacion);
+    }
+    
+    // Método para determinar si la fila seleccionada es una nueva fila (vacía)
+    private boolean isNewRow(int row) {
+        DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
+        for (int col = 0; col < modelo.getColumnCount(); col++) {
+            if (!modelo.getValueAt(row, col).toString().isEmpty()) {
+                return false; // La fila no es nueva si hay datos
+            }
+        }
+        return true; // La fila es nueva si todas las celdas están vacías
     }
     
 }
