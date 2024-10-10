@@ -33,16 +33,16 @@ public class PersonaDB {
             while (resultSet.next()) {
                 
                 Persona persona = new Persona(
-                    resultSet.getInt("dpi"),            // dpi
-                    resultSet.getString("primer_nombre"),                    // nombre1
-                    resultSet.getString("segundo_nombre"),                   // nombre2
-                    resultSet.getString("primer_apellido"),                    // apellido1
-                    resultSet.getString("segundo_apellido"),                    // apellido2
-                    resultSet.getString("direccion"), // direccionDomicilio
-                    resultSet.getString("telefono_casa"),                   // telefonoDomicilio
-                    resultSet.getString("telefono_movil"),                   // telefonoMovil
-                    resultSet.getBigDecimal("salario_base"),  // salarioBase
-                    resultSet.getBigDecimal("bonificacion")   // bonificacion
+                    resultSet.getInt("dpi"),                // dpi
+                    resultSet.getString("primer_nombre"),   // nombre1
+                    resultSet.getString("segundo_nombre"),  // nombre2
+                    resultSet.getString("primer_apellido"), // apellido1
+                    resultSet.getString("segundo_apellido"),// apellido2
+                    resultSet.getString("direccion"),       // direccionDomicilio
+                    resultSet.getString("telefono_casa"),   // telefonoDomicilio
+                    resultSet.getString("telefono_movil"),  // telefonoMovil
+                    resultSet.getBigDecimal("salario_base"),// salarioBase
+                    resultSet.getBigDecimal("bonificacion") // bonificacion
                 );
                 listaPersonas.add(persona);
             }
