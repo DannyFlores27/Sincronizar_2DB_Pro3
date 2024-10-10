@@ -4,14 +4,14 @@ package logica;
 import java.math.BigDecimal;
 
 public class Persona {
-    private String dpi;
+    private int dpi;
     private String nombre1;
     private String nombre2;
     private String apellido1;
     private String apellido2;
     private String direccionDomicilio;
-    private int telefonoDomicilio;
-    private int telefonoMovil;
+    private String telefonoDomicilio;
+    private String telefonoMovil;
     private BigDecimal salarioBase;
     private BigDecimal bonificacion;
 
@@ -19,8 +19,8 @@ public class Persona {
     public Persona() {}
 
     // Constructor con parámetros
-    public Persona(String dpi, String nombre1, String nombre2, String apellido1, String apellido2, 
-                   String direccionDomicilio, int telefonoDomicilio, int telefonoMovil, 
+    public Persona(int dpi, String nombre1, String nombre2, String apellido1, String apellido2, 
+                   String direccionDomicilio, String telefonoDomicilio, String telefonoMovil, 
                    BigDecimal salarioBase, BigDecimal bonificacion) {
         this.dpi = dpi;
         this.nombre1 = nombre1;
@@ -35,11 +35,11 @@ public class Persona {
     }
 
     // Getters y Setters
-    public String getDpi() {
+    public int getDpi() {
         return dpi;
     }
 
-    public void setDpi(String dpi) {
+    public void setDpi(int dpi) {
         this.dpi = dpi;
     }
 
@@ -83,19 +83,19 @@ public class Persona {
         this.direccionDomicilio = direccionDomicilio;
     }
 
-    public int getTelefonoDomicilio() {
+    public String getTelefonoDomicilio() {
         return telefonoDomicilio;
     }
 
-    public void setTelefonoDomicilio(int telefonoDomicilio) {
+    public void setTelefonoDomicilio(String telefonoDomicilio) {
         this.telefonoDomicilio = telefonoDomicilio;
     }
 
-    public int getTelefonoMovil() {
+    public String getTelefonoMovil() {
         return telefonoMovil;
     }
 
-    public void setTelefonoMovil(int telefonoMovil) {
+    public void setTelefonoMovil(String telefonoMovil) {
         this.telefonoMovil = telefonoMovil;
     }
 

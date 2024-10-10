@@ -272,7 +272,7 @@ public class Inicio extends javax.swing.JFrame {
         Persona personaEditada = obtenerDatosFila(selectedRow);
 
         // Verificar si los campos obligatorios están llenos (DPI y Nombre1)
-        if (personaEditada.getDpi().isEmpty() || personaEditada.getNombre1().isEmpty()) {
+        if (personaEditada.getDpi() == 0 || personaEditada.getNombre1().isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Debe llenar todos los campos obligatorios (DPI, Nombre1).", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -511,7 +511,7 @@ public class Inicio extends javax.swing.JFrame {
     // Función para obtener los datos de la fila seleccionada y crear una Persona
     private Persona obtenerDatosFila(int fila) {
         // Obtener los datos de la tabla
-        String dpi = tblDatos.getValueAt(fila, 0).toString();
+        int dpi = (int) tblDatos.getValueAt(fila, 0);
         String nombre1 = tblDatos.getValueAt(fila, 1).toString();
         String nombre2 = tblDatos.getValueAt(fila, 2).toString();
         String apellido1 = tblDatos.getValueAt(fila, 3).toString();
@@ -519,8 +519,8 @@ public class Inicio extends javax.swing.JFrame {
         String direccion = tblDatos.getValueAt(fila, 5).toString();
 
         // Conversión de los teléfonos a int
-        int telefonoDomicilio = Integer.parseInt(tblDatos.getValueAt(fila, 6).toString());
-        int telefonoMovil = Integer.parseInt(tblDatos.getValueAt(fila, 7).toString());
+        String telefonoDomicilio = tblDatos.getValueAt(fila, 6).toString();
+        String telefonoMovil = tblDatos.getValueAt(fila, 7).toString();
 
         // Conversión de los valores numéricos a BigDecimal
         BigDecimal salarioBase = new BigDecimal(tblDatos.getValueAt(fila, 8).toString());
