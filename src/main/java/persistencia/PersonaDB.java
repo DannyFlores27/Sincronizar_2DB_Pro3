@@ -38,11 +38,74 @@ public class PersonaDB {
             new BigDecimal("4200.75"),  // salarioBase
             new BigDecimal("600.50")    // bonificacion
         );
+        
+        // Datos de Persona 3
+        Persona persona3 = new Persona(
+            "1234567890123",            // dpi
+            "Carlos",                   // nombre1
+            "Andrés",                   // nombre2
+            "Pérez",                    // apellido1
+            "García",                   // apellido2
+            "Calle 4, Zona 1",          // direccionDomicilio
+            24446677,                   // telefonoDomicilio
+            55443322,                   // telefonoMovil
+            new BigDecimal("3500.00"),  // salarioBase
+            new BigDecimal("500.00")    // bonificacion
+        );
+        
+        // Datos de Persona 4
+        Persona persona4 = new Persona(
+            "1496033598266",            // dpi
+            "Ana",                      // nombre1
+            "Gabriela",                 // nombre2
+            "Martínez",                 // apellido1
+            "Rodríguez",                // apellido2
+            "Calle Los Almendros, Zona 7", // direccionDomicilio
+            23334455,                   // telefonoDomicilio
+            55660099,                   // telefonoMovil
+            new BigDecimal("3800.25"),  // salarioBase
+            new BigDecimal("650.75")    // bonificacion
+        );    
+        
+        // Datos de Persona 5
+        Persona persona5 = new Persona(
+            "9998887776665",            // dpi
+            "Juan",                     // nombre1
+            "Esteban",                  // nombre2
+            "Santos",                   // apellido1
+            "Velásquez",                // apellido2
+            "Boulevard Miraflores, Zona 8", // direccionDomicilio
+            22557788,                   // telefonoDomicilio
+            56667788,                   // telefonoMovil
+            new BigDecimal("4200.50"),  // salarioBase
+            new BigDecimal("700.00")    // bonificacion
+        );
+
+        // Datos de Persona 6
+        Persona persona6 = new Persona(
+            "5544332211009",            // dpi
+            "Lucía",                    // nombre1
+            "Beatriz",                  // nombre2
+            "Gómez",                    // apellido1
+            "Morales",                  // apellido2
+            "Avenida Las Flores, Zona 12", // direccionDomicilio
+            22330077,                   // telefonoDomicilio
+            55779988,                   // telefonoMovil
+           new BigDecimal("4000.75"),  // salarioBase
+           new BigDecimal("580.25")    // bonificacion
+        );
+
+          
 
         // Agregar personas a la lista
         listaPersonas.add(persona1);
         listaPersonas.add(persona2);
+        listaPersonas.add(persona3);
+        listaPersonas.add(persona4);
+        listaPersonas.add(persona5);
+        listaPersonas.add(persona6);
 
+        
         // Retornar la lista de personas
         return listaPersonas;
     }
