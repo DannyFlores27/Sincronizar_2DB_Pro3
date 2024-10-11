@@ -114,4 +114,18 @@ public class Persona {
     public void setBonificacion(BigDecimal bonificacion) {
         this.bonificacion = bonificacion;
     }
+    
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "DPI='" + dpi + '\'' +
+                ", Nombre Completo='" + nombre1 + " " + nombre2 + " " + apellido1 + " " + apellido2 + '\'' +
+                ", Dirección='" + direccionDomicilio + '\'' +
+                ", Teléfono Domicilio=" + telefonoDomicilio +
+                ", Teléfono Móvil=" + telefonoMovil +
+                ", Salario Base=" + salarioBase +
+                ", Bonificación=" + bonificacion +
+                '}';
+    }
+
 }

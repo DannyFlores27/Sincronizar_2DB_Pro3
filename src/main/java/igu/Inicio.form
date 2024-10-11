@@ -168,10 +168,13 @@
                   <Dimension value="[110, 35]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSincronizarDBActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnPostgreDB">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Postgre DB"/>
+                <Property name="text" type="java.lang.String" value="PostgreSQL DB"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -219,6 +222,9 @@
                   <Dimension value="[110, 35]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnActualizar">
               <Properties>
