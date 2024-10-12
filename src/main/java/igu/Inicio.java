@@ -257,6 +257,16 @@ public class Inicio extends javax.swing.JFrame {
         if (selectedRow != -1) {
             // Permitir la edición de la fila seleccionada
             habilitarEdicionFila(selectedRow);
+<<<<<<< Updated upstream
+=======
+            btnGuardar.setEnabled(true);
+            btnSincronizarDB.setEnabled(false);
+            btnCrear.setEnabled(false);
+            btnActualizar.setEnabled(false);
+            btnMySqlDB.setEnabled(false);
+            btnPostgreDB.setEnabled(false);
+            
+>>>>>>> Stashed changes
         } else {
             // No hay fila seleccionada, mostrar mensaje
             javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para actualizar.", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
@@ -271,10 +281,65 @@ public class Inicio extends javax.swing.JFrame {
         // Crear una instancia de Persona con los datos editados en la fila seleccionada
         Persona personaEditada = obtenerDatosFila(selectedRow);
 
+<<<<<<< Updated upstream
         // Verificar si los campos obligatorios están llenos (DPI y Nombre1)
         if (personaEditada.getDpi() == 0 || personaEditada.getNombre1().isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Debe llenar todos los campos obligatorios (DPI, Nombre1).", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
             return;
+=======
+            // Verificar si todos los campos de texto están llenos
+            if (personaEditada.getDpi() == 0
+                || personaEditada.getNombre1() == null || personaEditada.getNombre1().trim().isEmpty()
+                || personaEditada.getNombre2() == null || personaEditada.getNombre2().trim().isEmpty()
+                || personaEditada.getApellido1() == null || personaEditada.getApellido1().trim().isEmpty()
+                || personaEditada.getApellido2() == null || personaEditada.getApellido2().trim().isEmpty()
+                || personaEditada.getDireccionDomicilio() == null || personaEditada.getDireccionDomicilio().trim().isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Debe llenar todos los campos de texto.", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            // Verificar si los campos numéricos son válidos
+            if ("".equals(personaEditada.getTelefonoDomicilio()) || "".equals(personaEditada.getTelefonoMovil())) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Debe ingresar números válidos para los teléfonos.", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            if (personaEditada.getSalarioBase() == null || personaEditada.getSalarioBase().compareTo(BigDecimal.ZERO) <= 0 
+                || personaEditada.getBonificacion() == null || personaEditada.getBonificacion().compareTo(BigDecimal.ZERO) <= 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Debe ingresar un salario y bonificación válidos.", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            // Obtener el tipo de base de datos del label
+            String tipoDB = lblDbOn.getText();
+
+            // Llamar a la capa de control para actualizar o crear la persona
+            if (esEdicion) { // Suponiendo que tienes una variable booleana esEdicion para identificar si es actualización
+                control.actualizarPersona(personaEditada, tipoDB);
+                javax.swing.JOptionPane.showMessageDialog(this, "Los cambios han sido guardados exitosamente.");
+            } else {
+                control.crearPersona(personaEditada, tipoDB);
+                javax.swing.JOptionPane.showMessageDialog(this, "La nueva persona ha sido creada exitosamente.");
+            }
+
+            // Deshabilitar la edición
+            deshabilitarEdicion();
+            btnGuardar.setEnabled(false);
+            btnSincronizarDB.setEnabled(true);
+            btnCrear.setEnabled(true);
+            btnActualizar.setEnabled(true);
+            cargarTabla(lblDbOn.getText());
+
+            // Habilitar botones según la base de datos seleccionada
+            if (mySql.equals(lblDbOn.getText())) {
+                btnPostgreDB.setEnabled(true);
+            } else {
+                btnMySqlDB.setEnabled(true);
+            }
+        } else {
+            // No hay fila seleccionada, mostrar mensaje
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay fila seleccionada para guardar.", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+>>>>>>> Stashed changes
         }
 
         // Obtener el tipo de base de datos del label
@@ -323,6 +388,29 @@ public class Inicio extends javax.swing.JFrame {
     habilitarEdicion(newRow);
     }//GEN-LAST:event_btnCrearActionPerformed
 
+<<<<<<< Updated upstream
+=======
+    private void btnSincronizarDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSincronizarDBActionPerformed
+        control.sincronizar2DB(obtenerListaPersonasDeTabla());
+        cargarTabla(lblDbOn.getText());
+    }//GEN-LAST:event_btnSincronizarDBActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        control.eliminarPersona(borrarFilaSeleccionada(), lblDbOn.getText());
+        btnGuardar.setEnabled(false);
+        cargarTabla(lblDbOn.getText());
+        btnSincronizarDB.setEnabled(true);
+        btnCrear.setEnabled(true);
+        btnActualizar.setEnabled(true);
+        cargarTabla(lblDbOn.getText());
+        if (mySql.equals(lblDbOn.getText())) {
+                btnPostgreDB.setEnabled(true);
+            } else {
+                btnMySqlDB.setEnabled(true);
+            }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+>>>>>>> Stashed changes
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
@@ -511,13 +599,18 @@ public class Inicio extends javax.swing.JFrame {
     // Función para obtener los datos de la fila seleccionada y crear una Persona
     private Persona obtenerDatosFila(int fila) {
         // Obtener los datos de la tabla
+<<<<<<< Updated upstream
         int dpi = (int) tblDatos.getValueAt(fila, 0);
+=======
+        int dpi = Integer.parseInt(tblDatos.getValueAt(fila, 0).toString());
+>>>>>>> Stashed changes
         String nombre1 = tblDatos.getValueAt(fila, 1).toString();
         String nombre2 = tblDatos.getValueAt(fila, 2).toString();
         String apellido1 = tblDatos.getValueAt(fila, 3).toString();
         String apellido2 = tblDatos.getValueAt(fila, 4).toString();
         String direccion = tblDatos.getValueAt(fila, 5).toString();
 
+<<<<<<< Updated upstream
         // Conversión de los teléfonos a int
         String telefonoDomicilio = tblDatos.getValueAt(fila, 6).toString();
         String telefonoMovil = tblDatos.getValueAt(fila, 7).toString();
@@ -525,6 +618,19 @@ public class Inicio extends javax.swing.JFrame {
         // Conversión de los valores numéricos a BigDecimal
         BigDecimal salarioBase = new BigDecimal(tblDatos.getValueAt(fila, 8).toString());
         BigDecimal bonificacion = new BigDecimal(tblDatos.getValueAt(fila, 9).toString());
+=======
+        // Validación de los teléfonos antes de convertirlos a int
+        String telefonoDomicilioStr = tblDatos.getValueAt(fila, 6).toString().trim();
+
+        String telefonoDomicilio = tblDatos.getValueAt(fila, 6).toString();
+        String telefonoMovil = tblDatos.getValueAt(fila, 7).toString();
+        // Validación de los valores numéricos antes de convertirlos a BigDecimal
+        String salarioBaseStr = tblDatos.getValueAt(fila, 8).toString().trim();
+        BigDecimal salarioBase = salarioBaseStr.isEmpty() ? BigDecimal.ZERO : new BigDecimal(salarioBaseStr);
+
+        String bonificacionStr = tblDatos.getValueAt(fila, 9).toString().trim();
+        BigDecimal bonificacion = bonificacionStr.isEmpty() ? BigDecimal.ZERO : new BigDecimal(bonificacionStr);
+>>>>>>> Stashed changes
 
         // Crear un objeto Persona con los datos de la fila
         return new Persona(dpi, nombre1, nombre2, apellido1, apellido2, direccion, telefonoDomicilio, telefonoMovil, salarioBase, bonificacion);

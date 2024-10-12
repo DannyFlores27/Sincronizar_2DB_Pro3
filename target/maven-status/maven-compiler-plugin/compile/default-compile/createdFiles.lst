@@ -11,4 +11,8 @@ igu\Inicio$1.class
 persistencia\ConectorMySQL.class
 igu\Inicio$7.class
 persistencia\ConectorPostgre.class
+<<<<<<< Updated upstream
+=======
+igu\Inicio$10.class
+>>>>>>> Stashed changes
 igu\Inicio$2.class
